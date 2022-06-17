@@ -12,12 +12,12 @@ sudo apt-get -y autoremove;
 sudo apt-get clean;
 sudo rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*;
 sudo update-alternatives --set php /usr/bin/php8.1;
-sudo cp php-fpm73.conf /etc/php/8.1/fpm/php-fpm.conf
+sudo cp gitpod/configs/php-fpm73.conf /etc/php/8.1/fpm/php-fpm.conf
 sudo /etc/init.d/php7.4-fpm stop;
 sudo supervisorctl stop php-fpm
-sudo sed -i 's#pid = /tmp/php7.4-fpm.pid#pid = /tmp/php8.1-fpm.pid#g' /workspace/magento2gitpod/php-fpm.conf
-sudo sed -i 's#error_log = /tmp/php7.4-fpm.log#error_log = /tmp/php8.1-fpm.log#g' /workspace/magento2gitpod/php-fpm.conf
-sudo sed -i 's#command=/usr/sbin/php-fpm7.4 --fpm-config /workspace/magento2gitpod/php-fpm.conf#command=/usr/sbin/php-fpm8.1 --fpm-config /workspace/magento2gitpod/php-fpm.conf#g' /etc/supervisor/conf.d/sp-php-fpm.conf;
+sudo sed -i 's#pid = /tmp/php7.4-fpm.pid#pid = /tmp/php8.1-fpm.pid#g' /workspace/magento2gitpod/gitpod/configs/php-fpm.conf
+sudo sed -i 's#error_log = /tmp/php7.4-fpm.log#error_log = /tmp/php8.1-fpm.log#g' /workspace/magento2gitpod/gitpod/configs/php-fpm.conf
+sudo sed -i 's#command=/usr/sbin/php-fpm7.4 --fpm-config /workspace/magento2gitpod/gitpod/configs/php-fpm.conf#command=/usr/sbin/php-fpm8.1 --fpm-config /workspace/magento2gitpod/gitpod/configs/php-fpm.conf#g' /etc/supervisor/conf.d/sp-php-fpm.conf;
 ps aux | grep php-fpm | awk {'print $2'} | xargs kill -s 9;
 sudo supervisorctl shutdown mysql;
 sudo service supervisor start &>/dev/null &

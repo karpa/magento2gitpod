@@ -225,39 +225,39 @@ while true; do
       display_result "Magento 2 Cron service started successfully. Press enter to continue ..."
       ;;
     24 )
-      result=$(cd /workspace/magento2gitpod; bash pwa-studio-installer.sh)
+      result=$(cd /workspace/magento2gitpod/gitpod; bash pwa-studio-installer.sh)
       display_result "PWA Studio installed successfully. You can start service with bash /workspace/magento2gitpod/pwa/start.sh & Press enter to continue ..."
       ;;
     25 )
-      cd /workspace/magento2gitpod; bash cloudbeaver.sh;
+      cd /workspace/magento2gitpod/gitpod; bash cloudbeaver.sh;
       display_result "CloudBeaver installed successfully. You can view SQL tool on port 8003. Press enter to continue ..."
       ;;
     26 )
-      cd /workspace/magento2gitpod; bash mailhog.sh;
+      cd /workspace/magento2gitpod/gitpod; bash mailhog.sh;
       display_result "MailHog SMTP server installed successfully. You can view SQL tool on port 8025. Press enter to continue ..."
       ;;
     27 )
-      cd /workspace/magento2gitpod; bash switch-php73.sh;
+      cd /workspace/magento2gitpod/gitpod; bash switch-php73.sh;
       display_result "Version successfully switched to PHP 7.3 Press enter to continue ..."
       ;;
     28 )
-      cd /workspace/magento2gitpod; bash switch-php81.sh; sleep 10; clear
+      cd /workspace/magento2gitpod/gitpod; bash switch-php81.sh; sleep 10; clear
       display_result "Version successfully switched to PHP 8.1 Press enter to continue ..."
       sudo service supervisor start &>/dev/null &
       ;;
     29 )
-      cd /workspace/magento2gitpod; bash switch-mysql8.sh;
+      cd /workspace/magento2gitpod/gitpod; bash switch-mysql8.sh;
       display_result "Version successfully switched to MySQL 8 Press enter to continue ..."
       ;;
     30 )
       sudo apt-get update;
       sudo apt-get install varnish -y;
       sudo rm -f /etc/varnish;
-      sudo cp /workspace/magento2gitpod/default.vcl /etc/varnish;
+      sudo cp /workspace/magento2gitpod/gitpod/configs/default.vcl /etc/varnish;
       sudo service nginx stop;
       sudo ps aux | grep nginx | awk {'print $2'} | xargs kill -s 9;
       sudo rm -f /etc/nginx/nginx.conf;
-      sudo cp /workspace/magento2gitpod/nginx-varnish.conf /etc/nginx/nginx.conf;
+      sudo cp /workspace/magento2gitpod/gitpod/configs/nginx-varnish.conf /etc/nginx/nginx.conf;
       n98-magerun2 config:set system/full_page_cache/caching_application 2;
       n98-magerun2 config:set system/full_page_cache/ttl 86400;
       n98-magerun2 config:set system/full_page_cache/varnish/backend_host 127.0.0.1;
@@ -275,11 +275,11 @@ while true; do
       sudo apt-get update;
       sudo apt-get install varnish -y;
       sudo rm -f /etc/varnish;
-      sudo cp /workspace/magento2gitpod/default.vcl /etc/varnish;
+      sudo cp /workspace/magento2gitpod/gitpod/configs/default.vcl /etc/varnish;
       sudo service nginx stop;
       sudo ps aux | grep nginx | awk {'print $2'} | xargs kill -s 9;
       sudo rm -f /etc/nginx/nginx.conf;
-      sudo cp /workspace/magento2gitpod/nginx-varnish.conf /etc/nginx/nginx.conf;
+      sudo cp /workspace/magento2gitpod/gitpod/configs/nginx-varnish.conf /etc/nginx/nginx.conf;
       n98-magerun2 config:set system/full_page_cache/caching_application 2;
       n98-magerun2 config:set system/full_page_cache/ttl 86400;
       n98-magerun2 config:set system/full_page_cache/varnish/backend_host 127.0.0.1;
@@ -292,7 +292,7 @@ while true; do
       sudo service nginx stop;
       sudo ps aux | grep nginx | awk {'print $2'} | xargs kill -s 9;
       sudo rm -f /etc/nginx/nginx.conf;
-      sudo cp /workspace/magento2gitpod/nginx.conf /etc/nginx/nginx.conf;
+      sudo cp /workspace/magento2gitpod/gitpod/configs/nginx.conf /etc/nginx/nginx.conf;
       n98-magerun2 config:set system/full_page_cache/caching_application 1;
       n98-magerun2 config:set system/full_page_cache/ttl 86400;
       sudo service nginx restart &

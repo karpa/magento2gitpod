@@ -1,5 +1,7 @@
 FROM gitpod/workspace-full:latest
 
+ENV GITPOD gitpod
+
 RUN sudo apt-get update
 RUN sudo apt-get -y install lsb-release
 RUN sudo apt-get -y install apt-utils
@@ -78,21 +80,21 @@ RUN set -ex; \
 RUN sudo chown -R gitpod:gitpod /etc/mysql /var/run/mysqld /var/log/mysql /var/lib/mysql /var/lib/mysql-files /var/lib/mysql-keyring
 
 # Install our own MySQL config
-COPY mysql.cnf /etc/mysql/conf.d/mysqld.cnf
-COPY .my.cnf /home/gitpod
-COPY mysql.conf /etc/supervisor/conf.d/mysql.conf
+COPY $GITPOD/configs/mysql.cnf /etc/mysql/conf.d/mysqld.cnf
+COPY $GITPOD/configs/.my.cnf /home/gitpod
+COPY $GITPOD/configs/mysql.conf /etc/supervisor/conf.d/mysql.conf
 RUN sudo chown gitpod:gitpod /home/gitpod/.my.cnf
 
 # Install default-login for MySQL clients
-COPY client.cnf /etc/mysql/conf.d/client.cnf
+COPY $GITPOD/configs/client.cnf /etc/mysql/conf.d/client.cnf
 
 #Copy nginx default and php-fpm.conf file
 #COPY default /etc/nginx/sites-available/default
-COPY php-fpm.conf /etc/php/7.4/fpm/php-fpm.conf
-COPY sp-php-fpm.conf /etc/supervisor/conf.d/sp-php-fpm.conf
+COPY $GITPOD/configs/php-fpm.conf /etc/php/7.4/fpm/php-fpm.conf
+COPY $GITPOD/configs/sp-php-fpm.conf /etc/supervisor/conf.d/sp-php-fpm.conf
 RUN sudo chown -R gitpod:gitpod /etc/php
 
-COPY nginx.conf /etc/nginx
+COPY $GITPOD/configs/nginx.conf /etc/nginx
 
 #Selenium required for MFTF
 RUN sudo wget -c https://selenium-release.storage.googleapis.com/3.141/selenium-server-standalone-3.141.59.jar
@@ -128,11 +130,11 @@ RUN \
     && sudo tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp \
     && sudo mv /tmp/blackfire-*.so $(php -r "echo ini_get('extension_dir');")/blackfire.so
 
-COPY blackfire-agent.ini /etc/blackfire/agent
-COPY blackfire-php.ini /etc/php/7.4/fpm/conf.d/92-blackfire-config.ini
-COPY blackfire-php.ini /etc/php/7.4/cli/conf.d/92-blackfire-config.ini
+COPY $GITPOD/configs/blackfire-agent.ini /etc/blackfire/agent
+COPY $GITPOD/configs/blackfire-php.ini /etc/php/7.4/fpm/conf.d/92-blackfire-config.ini
+COPY $GITPOD/configs/blackfire-php.ini /etc/php/7.4/cli/conf.d/92-blackfire-config.ini
 
-COPY blackfire-run.sh /blackfire-run.sh
+COPY $GITPOD/blackfire-run.sh /blackfire-run.sh
 
 ENTRYPOINT ["/bin/bash", "/blackfire-run.sh"]
 
@@ -210,7 +212,7 @@ RUN \
      
 RUN sudo chown -R gitpod:gitpod /etc/php
 RUN sudo chown -R gitpod:gitpod /etc/newrelic
-COPY newrelic.cfg /etc/newrelic
+COPY $GITPOD/configs/newrelic.cfg /etc/newrelic
 RUN sudo rm -f /usr/bin/php
 RUN sudo ln -s /usr/bin/php7.4 /usr/bin/php
 
@@ -249,7 +251,7 @@ RUN curl https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.9.
     && tar -xzf elasticsearch-7.9.3-linux-x86_64.tar.gz
 ENV ES_HOME79="$HOME/elasticsearch-7.9.3"
 
-COPY sp-elasticsearch.conf /etc/supervisor/conf.d/elasticsearch.conf
+COPY $GITPOD/configs/sp-elasticsearch.conf /etc/supervisor/conf.d/elasticsearch.conf
 
 RUN sudo apt-key adv --keyserver "hkps://keys.openpgp.org" --recv-keys "0x0A9AF2115F4687BD29803A206B73A36E6026DFCA" \
     && sudo apt-key adv --keyserver "keyserver.ubuntu.com" --recv-keys "F77F1EDA57EBB1CC" \
@@ -268,6 +270,6 @@ RUN sudo apt-key adv --keyserver "hkps://keys.openpgp.org" --recv-keys "0x0A9AF2
 ## Install rabbitmq-server and its dependencies
 RUN sudo apt-get install rabbitmq-server -y --fix-missing
 
-COPY lighthouse.conf /etc
-COPY rabbitmq.conf /etc/rabbitmq/rabbitmq.conf
+COPY $GITPOD/configs/lighthouse.conf /etc
+COPY $GITPOD/configs/rabbitmq.conf /etc/rabbitmq/rabbitmq.conf
 RUN sudo cat /etc/lighthouse.conf >> /home/gitpod/.bashrc

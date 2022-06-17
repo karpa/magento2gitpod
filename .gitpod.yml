@@ -18,8 +18,8 @@ tasks:
     name: "Services"
     command: service nginx start &
              rm -f /etc/php/7.4/cli/conf.d/20-tideways.ini && rm -f /etc/php/7.4/fpm/conf.d/20-tideways.ini &&
-             sudo cp /workspace/magento2gitpod/sp-redis.conf /etc/supervisor/conf.d/redis.conf &&
-             sudo cp /workspace/magento2gitpod/sp-elasticsearch.conf /etc/supervisor/conf.d/elasticsearch.conf &&
+             sudo cp /workspace/magento2gitpod/gitpod/configs/sp-redis.conf /etc/supervisor/conf.d/redis.conf &&
+             sudo cp /workspace/magento2gitpod/gitpod/configs/sp-elasticsearch.conf /etc/supervisor/conf.d/elasticsearch.conf &&
              sudo sed -i 's/^\(\[supervisord\]\)$/\1\nnodaemon=true/' /etc/supervisor/supervisord.conf &&
              sudo /etc/init.d/supervisor start & \
              sleep 30;
